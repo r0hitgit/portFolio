@@ -1,0 +1,71 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-bg: #050806;
+  --color-surface: #0a0f0b;
+  --color-card: #0d130e;
+  --color-border: #1c2820;
+  --color-border-hover: #2c4433;
+  --color-accent: #39ff8f;
+  --color-accent-dim: #1f5c3d;
+  --color-amber: #ffb454;
+  --color-text: #e8ece9;
+  --color-muted: #7c8a80;
+  --color-faint: #4a5850;
+
+  --font-mono-display: 'JetBrains Mono', monospace;
+  --font-mono-body: 'IBM Plex Mono', monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-mono-body);
+  font-weight: 300;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* subtle scanline / crt texture, very low opacity so it reads as texture not gimmick */
+.crt-bg {
+  background-image:
+    radial-gradient(circle at 15% 10%, rgba(57,255,143,0.05), transparent 40%),
+    repeating-linear-gradient(0deg, rgba(255,255,255,0.012) 0px, rgba(255,255,255,0.012) 1px, transparent 1px, transparent 3px);
+}
+
+::selection {
+  background: var(--color-accent);
+  color: #04120a;
+}
+
+/* thin custom scrollbar to match the terminal feel */
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: var(--color-bg); }
+::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 0; }
+::-webkit-scrollbar-thumb:hover { background: var(--color-border-hover); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(57,255,143,0.5); }
+  50% { opacity: 0.6; box-shadow: 0 0 0 4px rgba(57,255,143,0); }
+}
+.pulse-dot {
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+
+.focus-ring:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}

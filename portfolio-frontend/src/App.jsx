@@ -14,7 +14,7 @@ import AdminEducation from './pages/admin/AdminEducation';
 
 function PublicLayout({ children }) {
   return (
-    <div className="flex min-h-screen">
+    <div className="flex flex-col lg:flex-row min-h-screen">
       <Sidebar />
       <main className="flex-1 min-w-0">{children}</main>
     </div>

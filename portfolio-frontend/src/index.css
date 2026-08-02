@@ -28,6 +28,7 @@ body {
   font-family: var(--font-mono-body);
   font-weight: 300;
   -webkit-font-smoothing: antialiased;
+  max-width: 100vw;
 }
 
 /* subtle scanline / crt texture, very low opacity so it reads as texture not gimmick */

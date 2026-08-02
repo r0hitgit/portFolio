@@ -95,7 +95,7 @@ export default function TerminalHero() {
         <p className="font-mono-body text-xs tracking-widest text-accent uppercase mb-4 flex items-center gap-2">
           <span className="text-faint">$</span> whoami
         </p>
-        <h1 className="font-mono-display font-black leading-[0.95] tracking-tight text-[13vw] sm:text-7xl md:text-8xl mb-6">
+        <h1 className="font-mono-display font-black leading-[0.95] tracking-tight text-6xl sm:text-7xl md:text-8xl mb-6 break-words">
           Rohit
           <br />
           <span className="text-accent">Verma</span>
@@ -121,7 +121,7 @@ export default function TerminalHero() {
           <div className="text-muted">
             <span className="text-faint">approach:</span> end-to-end — APIs, UI, deployment pipelines
           </div>
-          <div className="text-faint pt-1 border-t border-border mt-2 italic">
+          <div className="text-muted pt-1 border-t border-border mt-2 italic">
             # fun fact: when I start building, the world disappears — I don't stop until it works
           </div>
         </div>
@@ -133,7 +133,7 @@ export default function TerminalHero() {
               href={link.href}
               target={link.href.startsWith('http') ? '_blank' : undefined}
               rel="noopener noreferrer"
-              className="focus-ring group flex items-center gap-2 px-4 py-2.5 border border-border text-[14px] text-muted hover:text-accent hover:border-accent-dim hover:shadow-[0_0_16px_-4px_rgba(57,255,143,0.35)] transition-all font-mono-body"
+              className="focus-ring group flex items-center gap-2 px-4 py-2.5 border border-border text-[14px] text-muted hover:text-accent hover:border-accent-dim hover:shadow-[0_0_16px_-4px_rgba(57,255,143,0.35)] transition-all font-mono-body max-w-full break-all sm:break-normal"
             >
               <svg
                 viewBox="0 0 24 24"
@@ -148,6 +148,15 @@ export default function TerminalHero() {
             </a>
           ))}
         </div>
+      </div>
+
+      <div
+        className={`absolute bottom-8 left-6 sm:left-12 font-mono-body text-[13px] text-muted flex items-center gap-2 transition-opacity duration-700 ${
+          showHero ? 'opacity-100' : 'opacity-0'
+        }`}
+      >
+        <span className="animate-bounce text-accent">↓</span>
+        <span className="tracking-widest">SCROLL</span>
       </div>
     </div>
   );

@@ -17,7 +17,7 @@ export default function EducationSection({ items }) {
               </p>
             </div>
             <div className="text-right shrink-0 font-mono-body">
-              <p className="text-accent text-[15px]">{e.scoreLabel}</p>
+              {e.scoreLabel && <p className="text-accent text-[15px]">{e.scoreLabel}</p>}
               <p className="text-[12.5px] text-faint">
                 {e.startLabel} – {e.endLabel}
               </p>

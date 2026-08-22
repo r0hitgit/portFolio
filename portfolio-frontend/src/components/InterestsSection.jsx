@@ -9,7 +9,9 @@ export default function InterestsSection({ interests, languages }) {
           <div className="space-y-4">
             {interests.map((it, i) => (
               <div key={i} className="flex items-start gap-3 hover:translate-x-1 transition-transform">
-                <span className="text-lg leading-none mt-0.5">{it.emoji}</span>
+                <span className="shrink-0 mt-0.5 font-mono-body text-[10px] text-accent border border-accent-dim px-1.5 py-0.5 tracking-wider">
+                  {it.tag}
+                </span>
                 <div>
                   <p className="text-[14.5px] font-medium">{it.name}</p>
                   <p className="text-[13px] text-muted font-light">{it.sub}</p>

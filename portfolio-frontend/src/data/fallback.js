@@ -91,11 +91,11 @@ export const achievements = [
 ];
 
 export const interests = [
-  { emoji: '🏋️', name: 'Fitness & Gym', sub: 'Dedicated gym-goer — consistency, discipline, progressive overload' },
-  { emoji: '☕', name: 'Full-Stack Web Dev (Java)', sub: 'Building end-to-end apps with Spring Boot & React' },
-  { emoji: '🧩', name: 'Problem Solving', sub: 'DSA grinding on LeetCode — algorithms & data structures' },
-  { emoji: '🤖', name: 'AI & Machine Learning', sub: 'Exploring ML through B.Tech specialisation in AI & ML' },
-  { emoji: '🚀', name: 'Hackathons & Competitions', sub: 'Thrives in competitive problem-solving under time pressure' },
+  { tag: 'FIT', name: 'Fitness & Gym', sub: 'Dedicated gym-goer — consistency, discipline, progressive overload' },
+   { tag: 'DEV', name: 'Full-Stack Web Dev (Java)', sub: 'Building end-to-end apps with Spring Boot & React' },
+   { tag: 'DSA', name: 'Problem Solving', sub: 'DSA grinding on LeetCode — algorithms & data structures' },
+   { tag: 'AI', name: 'AI & Machine Learning', sub: 'Exploring ML through B.Tech specialisation in AI & ML' },
+   { tag: 'HACK', name: 'Hackathons & Competitions', sub: 'Thrives in competitive problem-solving under time pressure' },
 ];
 
 export const languages = [

@@ -11,6 +11,7 @@ import AdminProjects from './pages/admin/AdminProjects';
 import AdminPosts from './pages/admin/AdminPosts';
 import AdminAchievements from './pages/admin/AdminAchievements';
 import AdminEducation from './pages/admin/AdminEducation';
+import AdminMessages from './pages/admin/AdminMessages';
 
 function PublicLayout({ children }) {
   return (
@@ -37,6 +38,7 @@ export default function App() {
             <Route path="posts" element={<AdminPosts />} />
             <Route path="achievements" element={<AdminAchievements />} />
             <Route path="education" element={<AdminEducation />} />
+            <Route path="messages" element={<AdminMessages />} />
           </Route>
         </Routes>
       </BrowserRouter>

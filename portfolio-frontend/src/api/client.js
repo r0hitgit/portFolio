@@ -101,4 +101,7 @@ export const adminApi = {
   createEducation: (data) => authedRequest('POST', '/api/admin/education', data),
   updateEducation: (id, data) => authedRequest('PUT', `/api/admin/education/${id}`, data),
   deleteEducation: (id) => authedRequest('DELETE', `/api/admin/education/${id}`),
+
+   listMessages: () => authedRequest('GET', '/api/admin/messages'),
+    deleteMessage: (id) => authedRequest('DELETE', `/api/admin/messages/${id}`),
 };

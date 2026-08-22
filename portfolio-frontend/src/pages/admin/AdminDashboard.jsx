@@ -6,6 +6,7 @@ const CARDS = [
   { to: '/admin/posts', label: 'posts/', desc: 'write and publish blog posts' },
   { to: '/admin/achievements', label: 'achievements.md', desc: 'manage milestones' },
   { to: '/admin/education', label: 'education.log', desc: 'manage education entries' },
+  { to: '/admin/messages', label: 'messages/', desc: 'view contact form submissions' },
 ];
 
 export default function AdminDashboard() {

@@ -8,6 +8,7 @@ const NAV = [
   { to: '/admin/posts', label: 'posts' },
   { to: '/admin/achievements', label: 'achievements' },
   { to: '/admin/education', label: 'education' },
+  { to: '/admin/messages', label: 'messages' },
 ];
 
 export default function AdminLayout() {

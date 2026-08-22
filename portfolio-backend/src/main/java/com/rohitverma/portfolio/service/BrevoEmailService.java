@@ -1,5 +1,7 @@
 package com.rohitverma.portfolio.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpEntity;
@@ -17,6 +19,7 @@ import java.util.Map;
 @Service
 public class BrevoEmailService {
 
+    private static final Logger log = LoggerFactory.getLogger(BrevoEmailService.class);
     private static final String BREVO_ENDPOINT = "https://api.brevo.com/v3/smtp/email";
 
     @Value("${app.brevo.api-key}")
@@ -35,7 +38,7 @@ public class BrevoEmailService {
 
     public boolean sendContactNotification(String fromName, String fromEmail, String message) {
         if (apiKey == null || apiKey.isBlank()) {
-            // Not configured yet (e.g. local dev) — skip silently rather than fail the request.
+            log.warn("BREVO_API_KEY is not set — skipping email notification for contact message from {}", fromEmail);
             return false;
         }
 
@@ -55,8 +58,10 @@ public class BrevoEmailService {
 
         try {
             restTemplate.postForEntity(BREVO_ENDPOINT, new HttpEntity<>(body, headers), String.class);
+            log.info("Brevo notification email sent successfully for contact message from {}", fromEmail);
             return true;
         } catch (Exception ex) {
+            log.error("Failed to send Brevo notification email: {}", ex.getMessage(), ex);
             return false;
         }
     }

@@ -12,6 +12,47 @@ const FILES = [
   { href: '#contact', label: 'contact.sh' },
 ];
 
+/* Logo */
+const Logo = ({ size = 30 }) => {
+  const height = (size * 150) / 190;
+
+  return (
+    <svg
+      width={size}
+      height={height}
+      viewBox="0 0 190 150"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-label="Home"
+    >
+      <path
+        d="
+          M 16 25
+          H 129
+
+          C 134 25 137 30 134 35
+          L 111 69
+
+          C 108 73 104 75 98 75
+          H 60
+
+          C 54 75 51 81 54 86
+          L 95 140
+
+          C 99 146 106 146 110 140
+          L 177 25
+        "
+        stroke="#41FF8F"
+        strokeWidth="18"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+};
+
+
+
 export default function Sidebar() {
   const [open, setOpen] = useState(false);
 
@@ -36,13 +77,25 @@ export default function Sidebar() {
     <>
       {/* Desktop sidebar */}
       <aside className="hidden lg:flex flex-col w-64 shrink-0 h-screen sticky top-0 border-r border-border px-5 py-8">
-        <Link to="/" className="focus-ring font-mono-display font-black text-accent text-lg mb-1">
-          RV
+        <Link
+          to="/"
+          className="focus-ring inline-flex items-center mb-2"
+          aria-label="Home"
+        >
+          <Logo size={34} />
         </Link>
-        <p className="font-mono-body text-[11px] text-faint mb-8">~/rohit-verma</p>
+
+        <p className="font-mono-body text-[11px] text-faint mb-8">
+          ~/rohit-verma
+        </p>
+
         {linkList}
+
         <div className="mt-auto pt-8 font-mono-body text-[11px] text-faint">
-          <Link to="/blog" className="focus-ring hover:text-accent transition-colors">
+          <Link
+            to="/blog"
+            className="focus-ring hover:text-accent transition-colors"
+          >
             blog/
           </Link>
         </div>
@@ -50,59 +103,38 @@ export default function Sidebar() {
 
       {/* Mobile top bar */}
       <div className="lg:hidden sticky top-0 z-40 flex items-center justify-between border-b border-border bg-bg/90 backdrop-blur px-5 py-4">
-        <Link to="/" className="focus-ring font-mono-display font-black text-accent text-base">
-          RV
+        <Link
+          to="/"
+          className="focus-ring inline-flex items-center"
+          aria-label="Home"
+        >
+          <Logo size={30} />
         </Link>
+
         <button
           className="focus-ring font-mono-body text-xs text-muted border border-border px-3 py-1.5"
-          onClick={() => setOpen(true)}
+          onClick={() => setOpen((v) => !v)}
           aria-expanded={open}
-          aria-label="Open navigation"
+          aria-label="Toggle navigation"
         >
-          menu
+          {open ? 'close' : 'menu'}
         </button>
       </div>
 
-      {/* Mobile drawer: backdrop */}
-      <div
-        className={`lg:hidden fixed inset-0 z-50 bg-black/70 backdrop-blur-sm transition-opacity duration-300 ${
-          open ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
-        }`}
-        onClick={() => setOpen(false)}
-        aria-hidden={!open}
-      />
+      {/* Mobile navigation */}
+      {open && (
+        <div className="lg:hidden border-b border-border px-5 py-4">
+          {linkList}
 
-      {/* Mobile drawer: sliding panel from the left */}
-      <aside
-        className={`lg:hidden fixed top-0 left-0 z-50 h-screen w-72 max-w-[80vw] bg-bg border-r border-border px-5 py-6 transition-transform duration-300 ease-out ${
-          open ? 'translate-x-0' : '-translate-x-full'
-        }`}
-        aria-hidden={!open}
-      >
-        <div className="flex items-center justify-between mb-8">
           <Link
-            to="/"
+            to="/blog"
             onClick={() => setOpen(false)}
-            className="focus-ring font-mono-display font-black text-accent text-lg"
+            className="focus-ring block mt-3 font-mono-body text-[13px] text-faint hover:text-accent"
           >
-            RV
-          </Link>
-          <button
-            className="focus-ring font-mono-body text-xs text-muted border border-border px-3 py-1.5"
-            onClick={() => setOpen(false)}
-            aria-label="Close navigation"
-          >
-            close
-          </button>
-        </div>
-        <p className="font-mono-body text-[11px] text-faint mb-6">~/rohit-verma</p>
-        {linkList}
-        <div className="mt-8 pt-6 border-t border-border font-mono-body text-[11px] text-faint">
-          <Link to="/blog" onClick={() => setOpen(false)} className="focus-ring hover:text-accent transition-colors">
             blog/
           </Link>
         </div>
-      </aside>
+      )}
     </>
   );
 }

@@ -51,6 +51,7 @@ const Logo = ({ size = 30 }) => {
 const NAV = [
   { to: '/admin', label: 'dashboard', end: true },
   { to: '/admin/projects', label: 'projects' },
+  { to: '/admin/skills', label: 'skills' },
   { to: '/admin/posts', label: 'posts' },
   { to: '/admin/achievements', label: 'achievements' },
   { to: '/admin/education', label: 'education' },

@@ -13,6 +13,7 @@ const AdminProjects = lazy(() => import('./pages/admin/AdminProjects'));
 const AdminPosts = lazy(() => import('./pages/admin/AdminPosts'));
 const AdminAchievements = lazy(() => import('./pages/admin/AdminAchievements'));
 const AdminEducation = lazy(() => import('./pages/admin/AdminEducation'));
+const AdminSkills = lazy(() => import('./pages/admin/AdminSkills'));
 const AdminMessages = lazy(() => import('./pages/admin/AdminMessages'));
 
 function FallbackLoader() {
@@ -64,6 +65,7 @@ export default function App() {
             <Route path="/admin" element={<AdminLayout />}>
               <Route index element={<AdminDashboard />} />
               <Route path="projects" element={<AdminProjects />} />
+              <Route path="skills" element={<AdminSkills />} />
               <Route path="posts" element={<AdminPosts />} />
               <Route path="achievements" element={<AdminAchievements />} />
               <Route path="education" element={<AdminEducation />} />

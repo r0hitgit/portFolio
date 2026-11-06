@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/useAuth';
-import { getProjects, getAchievements, getEducation, adminApi } from '../../api/client';
+import { getProjects, getAchievements, getEducation, getSkills, adminApi } from '../../api/client';
 
 const CARDS = [
   { to: '/admin/projects', label: 'projects/', countKey: 'projects', desc: 'manage project entries' },
+  { to: '/admin/skills', label: 'skills.json', countKey: 'skills', desc: 'manage what I work with' },
   { to: '/admin/posts', label: 'posts/', countKey: 'posts', desc: 'write and publish blog posts' },
   { to: '/admin/achievements', label: 'achievements.md', countKey: 'achievements', desc: 'manage milestones' },
   { to: '/admin/education', label: 'education.log', countKey: 'education', desc: 'manage education entries' },
@@ -15,6 +16,7 @@ export default function AdminDashboard() {
   const { username } = useAuth();
   const [counts, setCounts] = useState({
     projects: null,
+    skills: null,
     posts: null,
     achievements: null,
     education: null,
@@ -24,13 +26,15 @@ export default function AdminDashboard() {
   useEffect(() => {
     Promise.allSettled([
       getProjects([]),
+      getSkills([]),
       adminApi.listPosts(),
       getAchievements([]),
       getEducation([]),
       adminApi.listMessages(),
-    ]).then(([proj, posts, ach, edu, msg]) => {
+    ]).then(([proj, sk, posts, ach, edu, msg]) => {
       setCounts({
         projects: proj.status === 'fulfilled' && Array.isArray(proj.value) ? proj.value.length : 0,
+        skills: sk.status === 'fulfilled' && Array.isArray(sk.value) ? sk.value.length : 0,
         posts: posts.status === 'fulfilled' && Array.isArray(posts.value) ? posts.value.length : 0,
         achievements: ach.status === 'fulfilled' && Array.isArray(ach.value) ? ach.value.length : 0,
         education: edu.status === 'fulfilled' && Array.isArray(edu.value) ? edu.value.length : 0,

@@ -37,6 +37,10 @@ export function getEducation(fallback) {
   return get('/api/education', fallback);
 }
 
+export function getSkills(fallback) {
+  return get('/api/skills', fallback);
+}
+
 export async function submitContact(payload) {
   let res;
   try {
@@ -124,6 +128,10 @@ export const adminApi = {
   createEducation: (data) => authedRequest('POST', '/api/admin/education', data),
   updateEducation: (id, data) => authedRequest('PUT', `/api/admin/education/${id}`, data),
   deleteEducation: (id) => authedRequest('DELETE', `/api/admin/education/${id}`),
+
+  createSkill: (data) => authedRequest('POST', '/api/admin/skills', data),
+  updateSkill: (id, data) => authedRequest('PUT', `/api/admin/skills/${id}`, data),
+  deleteSkill: (id) => authedRequest('DELETE', `/api/admin/skills/${id}`),
 
    listMessages: () => authedRequest('GET', '/api/admin/messages'),
     deleteMessage: (id) => authedRequest('DELETE', `/api/admin/messages/${id}`),

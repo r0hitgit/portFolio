@@ -7,12 +7,12 @@ import AchievementsSection from '../components/AchievementsSection';
 import InterestsSection from '../components/InterestsSection';
 import ContactSection from '../components/ContactSection';
 import Footer from '../components/Footer';
-import { getProjects, getAchievements, getEducation } from '../api/client';
+import { getProjects, getAchievements, getEducation, getSkills } from '../api/client';
 import {
   education as fallbackEducation,
   projects as fallbackProjects,
   achievements as fallbackAchievements,
-  skills,
+  skills as fallbackSkills,
   interests,
   languages,
 } from '../data/fallback';
@@ -21,11 +21,13 @@ export default function Home() {
   const [education, setEducation] = useState(fallbackEducation);
   const [projects, setProjects] = useState(fallbackProjects);
   const [achievements, setAchievements] = useState(fallbackAchievements);
+  const [skills, setSkills] = useState(fallbackSkills);
 
   useEffect(() => {
     getEducation(fallbackEducation).then(setEducation);
     getProjects(fallbackProjects).then(setProjects);
     getAchievements(fallbackAchievements).then(setAchievements);
+    getSkills(fallbackSkills).then(setSkills);
   }, []);
 
   return (

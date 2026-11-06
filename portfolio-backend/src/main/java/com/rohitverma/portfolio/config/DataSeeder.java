@@ -22,6 +22,7 @@ public class DataSeeder implements CommandLineRunner {
     private final ProjectRepository projectRepository;
     private final AchievementRepository achievementRepository;
     private final EducationEntryRepository educationEntryRepository;
+    private final SkillGroupRepository skillGroupRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Value("${ADMIN_USERNAME:admin}")
@@ -36,6 +37,7 @@ public class DataSeeder implements CommandLineRunner {
         seedEducation();
         seedProjects();
         seedAchievements();
+        seedSkills();
         cleanupAchievementEmojis();
     }
 
@@ -154,6 +156,43 @@ public class DataSeeder implements CommandLineRunner {
                         .dateLabel("Ongoing")
                         .icon(null)
                         .displayOrder(2)
+                        .build()
+        ));
+    }
+
+    private void seedSkills() {
+        if (skillGroupRepository.count() > 0) return;
+
+        skillGroupRepository.saveAll(List.of(
+                SkillGroup.builder()
+                        .groupKey("languages")
+                        .label("languages")
+                        .items(List.of("Java", "Python", "JavaScript", "C/C++"))
+                        .displayOrder(1)
+                        .build(),
+                SkillGroup.builder()
+                        .groupKey("frameworks")
+                        .label("frameworks_libraries")
+                        .items(List.of("Spring Boot", "Spring Security", "FastAPI", "React", "Vite", "Tailwind CSS", "REST API"))
+                        .displayOrder(2)
+                        .build(),
+                SkillGroup.builder()
+                        .groupKey("databases")
+                        .label("databases")
+                        .items(List.of("PostgreSQL", "MySQL", "SQLite", "MongoDB"))
+                        .displayOrder(3)
+                        .build(),
+                SkillGroup.builder()
+                        .groupKey("tools")
+                        .label("developer_tools")
+                        .items(List.of("VS Code", "IntelliJ IDEA", "Eclipse", "Postman", "Git", "GitHub", "Docker"))
+                        .displayOrder(4)
+                        .build(),
+                SkillGroup.builder()
+                        .groupKey("cloud")
+                        .label("cloud_devops")
+                        .items(List.of("Render", "Netlify", "Vercel", "Neon"))
+                        .displayOrder(5)
                         .build()
         ));
     }

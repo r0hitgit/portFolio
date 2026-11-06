@@ -49,3 +49,4 @@ public class SkillGroupService {
         skillGroupRepository.deleteById(id);
     }
 }
+

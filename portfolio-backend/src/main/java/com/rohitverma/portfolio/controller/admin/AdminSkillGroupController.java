@@ -39,3 +39,4 @@ public class AdminSkillGroupController {
         skillGroupService.delete(id);
     }
 }
+

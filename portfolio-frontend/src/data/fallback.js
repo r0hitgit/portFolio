@@ -113,7 +113,7 @@ export const achievements = [
 
 export const interests = [
   { tag: 'FIT', name: 'Fitness & Gym', sub: 'Dedicated gym-goer — consistency, discipline, progressive overload' },
-  { tag: 'DEV', name: 'Full-Stack Web Dev (Java)', sub: 'Building end-to-end apps with Spring Boot & React' },
+  { tag: 'PE', name: 'Prompt Engineer', sub: 'Designing structured prompts, system instructions, and LLM agent workflows' },
   { tag: 'DSA', name: 'Problem Solving', sub: 'DSA grinding on LeetCode — algorithms & data structures' },
   { tag: 'AI', name: 'AI & Machine Learning', sub: 'Exploring ML through B.Tech specialisation in AI & ML' },
   { tag: 'HACK', name: 'Hackathons & Competitions', sub: 'Thrives in competitive problem-solving under time pressure' },

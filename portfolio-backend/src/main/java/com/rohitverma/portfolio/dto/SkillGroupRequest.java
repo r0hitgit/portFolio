@@ -11,3 +11,4 @@ public record SkillGroupRequest(
         List<String> items,
         Integer displayOrder
 ) {}
+

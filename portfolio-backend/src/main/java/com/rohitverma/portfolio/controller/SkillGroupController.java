@@ -21,3 +21,4 @@ public class SkillGroupController {
         return skillGroupService.findAll();
     }
 }
+

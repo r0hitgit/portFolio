@@ -14,3 +14,4 @@ public interface SkillGroupRepository extends JpaRepository<SkillGroup, Long> {
 
     Optional<SkillGroup> findByGroupKey(String groupKey);
 }
+

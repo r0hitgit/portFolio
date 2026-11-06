@@ -36,3 +36,4 @@ public class SkillGroup {
     @Builder.Default
     private Integer displayOrder = 0;
 }
+

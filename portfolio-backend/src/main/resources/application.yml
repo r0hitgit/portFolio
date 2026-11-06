@@ -2,19 +2,25 @@ spring:
   application:
     name: portfolio-backend
 
-  datasource:
-    url: ${DB_URL:jdbc:postgresql://localhost:5432/portfolio}
-    username: ${DB_USERNAME:postgres}
-    password: ${DB_PASSWORD:postgres}
-    driver-class-name: org.postgresql.Driver
-
   jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: update
     properties:
       hibernate:
         format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
     show-sql: false
+
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/portfolio}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:postgres}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      connection-timeout: 30000
+      maximum-pool-size: 5
+      minimum-idle: 1
 
   servlet:
     multipart:

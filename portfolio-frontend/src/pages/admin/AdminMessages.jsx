@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { useAuth } from '../../context/AuthContext';
+import { useEffect, useState, useCallback } from 'react';
+import { useAuth } from '../../context/useAuth';
 import { useNavigate } from 'react-router-dom';
 import { adminApi } from '../../api/client';
 
@@ -9,11 +9,7 @@ export default function AdminMessages() {
   const [messages, setMessages] = useState(null);
   const [error, setError] = useState('');
 
-  useEffect(() => {
-    load();
-  }, []);
-
-  async function load() {
+  const load = useCallback(async () => {
     try {
       setMessages(await adminApi.listMessages());
     } catch (err) {
@@ -23,8 +19,13 @@ export default function AdminMessages() {
         return;
       }
       setError(err.message || 'Failed to load messages');
+      setMessages([]);
     }
-  }
+  }, [logout, navigate]);
+
+  useEffect(() => {
+    load();
+  }, [load]);
 
   async function handleDelete(id) {
     if (!window.confirm('Delete this message? This cannot be undone.')) return;
@@ -79,12 +80,20 @@ export default function AdminMessages() {
               <span className={m.emailSent ? 'text-accent' : 'text-faint'}>
                 {m.emailSent ? '[ email sent ]' : '[ email not sent \u2014 check via DB only ]'}
               </span>
-              <button
-                onClick={() => handleDelete(m.id)}
-                className="focus-ring text-faint hover:text-amber transition-colors"
-              >
-                delete
-              </button>
+              <div className="flex items-center gap-4">
+                <a
+                  href={`mailto:${m.email}?subject=Re: Portfolio Contact&body=Hi ${encodeURIComponent(m.name)},%0D%0A%0D%0A`}
+                  className="focus-ring text-accent hover:opacity-80 transition-opacity"
+                >
+                  ./reply.sh
+                </a>
+                <button
+                  onClick={() => handleDelete(m.id)}
+                  className="focus-ring text-faint hover:text-amber transition-colors"
+                >
+                  delete
+                </button>
+              </div>
             </div>
           </div>
         ))}

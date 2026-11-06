@@ -1,11 +1,16 @@
-const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
+const RAW_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
+const BASE_URL = RAW_BASE_URL.replace(/\/+$/, '');
 
 async function get(path, fallback) {
   try {
     const res = await fetch(`${BASE_URL}${path}`);
     if (!res.ok) throw new Error(`${res.status}`);
-    return await res.json();
-  } catch (err) {
+    const data = await res.json();
+    if (Array.isArray(data) && data.length === 0 && Array.isArray(fallback) && fallback.length > 0) {
+      return fallback;
+    }
+    return data;
+  } catch {
     // Backend not deployed yet, or unreachable — fall back to static content
     // so the site still renders correctly during development.
     return fallback;
@@ -33,22 +38,40 @@ export function getEducation(fallback) {
 }
 
 export async function submitContact(payload) {
-  const res = await fetch(`${BASE_URL}/api/contact`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload),
-  });
-  if (!res.ok) throw new Error('Failed to send message');
+  let res;
+  try {
+    res = await fetch(`${BASE_URL}/api/contact`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+  } catch {
+    throw new Error('Backend server is unreachable. Please email directly.');
+  }
+
+  if (!res.ok) {
+    const errBody = await res.json().catch(() => ({}));
+    throw new Error(errBody.message || 'Failed to send message');
+  }
   return res.json();
 }
 
 export async function login(username, password) {
-  const res = await fetch(`${BASE_URL}/api/auth/login`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ username, password }),
-  });
-  if (!res.ok) throw new Error('Invalid credentials');
+  let res;
+  try {
+    res = await fetch(`${BASE_URL}/api/auth/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, password }),
+    });
+  } catch {
+    throw new Error('Backend server is unreachable. Please make sure the backend is running.');
+  }
+
+  if (!res.ok) {
+    const errBody = await res.json().catch(() => ({}));
+    throw new Error(errBody.message || 'Invalid username or password');
+  }
   return res.json();
 }
 

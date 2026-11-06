@@ -7,7 +7,6 @@ const FIELDS = [
   { key: 'description', label: 'description', type: 'textarea' },
   { key: 'dateLabel', label: 'date label (e.g. Sep 2024)', type: 'text' },
   { key: 'link', label: 'link (optional)', type: 'text' },
-  { key: 'icon', label: 'icon (emoji)', type: 'text' },
   { key: 'displayOrder', label: 'display order', type: 'number' },
 ];
 

@@ -1,7 +1,7 @@
-import { createContext, useContext, useState, useCallback } from 'react';
+import { useState, useCallback } from 'react';
+import { AuthContext } from './authContextInstance';
 import { login as apiLogin } from '../api/client';
 
-const AuthContext = createContext(null);
 const STORAGE_KEY = 'portfolio_admin_token';
 
 export function AuthProvider({ children }) {
@@ -29,10 +29,4 @@ export function AuthProvider({ children }) {
       {children}
     </AuthContext.Provider>
   );
-}
-
-export function useAuth() {
-  const ctx = useContext(AuthContext);
-  if (!ctx) throw new Error('useAuth must be used within AuthProvider');
-  return ctx;
 }

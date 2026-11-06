@@ -21,13 +21,27 @@ export default function BlogPost() {
         <article>
           <div className="font-mono-body text-xs text-faint mb-1">~/rohit-verma/blog/</div>
           <h1 className="font-mono-display font-bold text-3xl mb-2">{post.title}</h1>
-          {post.publishedAt && (
-            <p className="font-mono-body text-[11px] text-faint mb-10">
-              {new Date(post.publishedAt).toLocaleDateString()}
-            </p>
-          )}
+          <div className="flex flex-wrap items-center gap-3 mb-8">
+            {post.publishedAt && (
+              <p className="font-mono-body text-[11px] text-faint">
+                {new Date(post.publishedAt).toLocaleDateString()}
+              </p>
+            )}
+            {post.tags && (
+              <div className="flex flex-wrap gap-1.5">
+                {post.tags.split(',').map((t) => t.trim()).filter(Boolean).map((tag) => (
+                  <span
+                    key={tag}
+                    className="font-mono-body text-[11px] px-2 py-0.5 border border-border text-accent-dim"
+                  >
+                    #{tag}
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
           <div className="prose-terminal text-[14px] text-muted font-light leading-relaxed space-y-4">
-            <ReactMarkdown>{post.content}</ReactMarkdown>
+            <ReactMarkdown>{post.content || ''}</ReactMarkdown>
           </div>
         </article>
       )}

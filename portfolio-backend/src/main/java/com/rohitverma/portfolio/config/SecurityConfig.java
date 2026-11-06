@@ -18,6 +18,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Configuration
@@ -41,8 +42,11 @@ public class SecurityConfig {
                         .requestMatchers(org.springframework.http.HttpMethod.GET,
                                 "/api/projects/**", "/api/posts/**", "/api/achievements/**",
                                 "/api/education/**").permitAll()
-                        .requestMatchers("/api/contact").permitAll()
-                        .requestMatchers("/actuator/health").permitAll()
+                        .requestMatchers(org.springframework.http.HttpMethod.HEAD,
+                                "/api/projects/**", "/api/posts/**", "/api/achievements/**",
+                                "/api/education/**").permitAll()
+                        .requestMatchers("/api/contact", "/api/contact/**").permitAll()
+                        .requestMatchers("/actuator/health", "/api/health").permitAll()
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
@@ -54,9 +58,20 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of(allowedOrigins.split(",")));
-        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        List<String> origins = Arrays.stream(allowedOrigins.split(","))
+                .map(String::trim)
+                .filter(s -> !s.isEmpty())
+                .toList();
+
+        if (origins.contains("*")) {
+            config.setAllowedOriginPatterns(List.of("*"));
+        } else {
+            config.setAllowedOrigins(origins);
+        }
+
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD", "PATCH"));
         config.setAllowedHeaders(List.of("*"));
+        config.setExposedHeaders(List.of("Authorization", "Content-Disposition"));
         config.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

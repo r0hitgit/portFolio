@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { useAuth } from '../../context/AuthContext';
+import { useEffect, useState, useCallback } from 'react';
+import { useAuth } from '../../context/useAuth';
 import { useNavigate } from 'react-router-dom';
 
 /**
@@ -32,22 +32,33 @@ export default function AdminResourceCRUD({
   const [error, setError] = useState('');
   const [saving, setSaving] = useState(false);
 
+  const handleAuthError = useCallback(
+    (err) => {
+      if (err?.message === 'SESSION_EXPIRED') {
+        logout();
+        navigate('/admin/login', { replace: true });
+        return true;
+      }
+      return false;
+    },
+    [logout, navigate]
+  );
+
+  const load = useCallback(async () => {
+    try {
+      const data = await fetchList();
+      setItems(data || []);
+    } catch (err) {
+      if (!handleAuthError(err)) {
+        setError(err?.message || 'Failed to load items');
+        setItems([]);
+      }
+    }
+  }, [fetchList, handleAuthError]);
+
   useEffect(() => {
     load();
-  }, []);
-
-  async function load() {
-    setItems(await fetchList());
-  }
-
-  function handleAuthError(err) {
-    if (err.message === 'SESSION_EXPIRED') {
-      logout();
-      navigate('/admin/login', { replace: true });
-      return true;
-    }
-    return false;
-  }
+  }, [load]);
 
   function openNew() {
     const blank = {};
@@ -65,6 +76,7 @@ export default function AdminResourceCRUD({
       let v = item[f.key];
       if (f.type === 'list') v = (v || []).join(', ');
       if (f.type === 'bullets') v = (v || []).join('\n');
+      if (f.type === 'date' && typeof v === 'string') v = v.slice(0, 10);
       if (v === undefined || v === null) v = f.type === 'checkbox' ? false : '';
       draft[f.key] = v;
     });
@@ -91,7 +103,12 @@ export default function AdminResourceCRUD({
       } else if (f.type === 'bullets') {
         v = v ? v.split('\n').map((s) => s.trim()).filter(Boolean) : [];
       } else if (f.type === 'number') {
-        v = v === '' ? null : Number(v);
+        v = v === '' || v === null || v === undefined ? null : Number(v);
+        if (v !== null && Number.isNaN(v)) v = null;
+      } else if (f.type === 'date') {
+        v = typeof v === 'string' && v.trim() ? v.trim() : null;
+      } else if (f.type === 'checkbox') {
+        v = !!v;
       }
       payload[f.key] = v;
     });
@@ -208,7 +225,7 @@ export default function AdminResourceCRUD({
                 <label className="block text-faint text-[12px] mb-1.5">{f.label}</label>
                 {f.type === 'textarea' || f.type === 'bullets' ? (
                   <textarea
-                    rows={f.type === 'bullets' ? 5 : 4}
+                    rows={f.type === 'bullets' ? 5 : f.key === 'content' ? 10 : 4}
                     value={form[f.key] ?? ''}
                     onChange={(e) => updateField(f.key, e.target.value)}
                     className="focus-ring w-full bg-transparent border border-border px-3 py-2 text-text focus:border-accent-dim transition-colors resize-none"

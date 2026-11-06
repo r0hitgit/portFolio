@@ -1,11 +1,11 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 
 const FILES = [
   { href: '#education', label: 'education.log' },
   { href: '#projects', label: 'projects/', indent: 0 },
-  { href: '#projects', label: 'nexhire.md', indent: 1 },
-  { href: '#projects', label: 'transaction-gui.md', indent: 1 },
+  { href: '#nexhire', label: 'nexhire.md', indent: 1 },
+  { href: '#genericmeds-ai', label: 'genericmeds-ai.md', indent: 1 },
   { href: '#skills', label: 'skills.json' },
   { href: '#achievements', label: 'achievements.md' },
   { href: '#interests', label: 'interests.yml' },
@@ -55,21 +55,65 @@ const Logo = ({ size = 30 }) => {
 
 export default function Sidebar() {
   const [open, setOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState('');
+  const location = useLocation();
+  const isHome = location.pathname === '/';
+
+  useEffect(() => {
+    if (!isHome) return;
+
+    const sectionIds = [
+      'education',
+      'projects',
+      'nexhire',
+      'genericmeds-ai',
+      'skills',
+      'achievements',
+      'interests',
+      'contact',
+    ];
+    const elements = sectionIds
+      .map((id) => document.getElementById(id))
+      .filter(Boolean);
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries.find((e) => e.isIntersecting);
+        if (visible) {
+          setActiveSection(visible.target.id);
+        }
+      },
+      { rootMargin: '-15% 0px -65% 0px', threshold: 0 }
+    );
+
+    elements.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, [isHome]);
 
   const linkList = (
     <nav className="flex flex-col gap-0.5 font-mono-body text-[14px]">
-      {FILES.map((f, i) => (
-        <a
-          key={i}
-          href={f.href}
-          onClick={() => setOpen(false)}
-          className={`focus-ring px-2.5 py-1.5 text-muted hover:text-accent hover:bg-white/[0.03] border-l-2 border-transparent hover:border-accent transition-colors ${
-            f.indent ? 'pl-6 text-[13px] text-faint' : ''
-          }`}
-        >
-          {f.label}
-        </a>
-      ))}
+      {FILES.map((f, i) => {
+        const targetHref = isHome ? f.href : `/${f.href}`;
+        const targetId = f.href.replace(/^#/, '');
+        const isActive = isHome && activeSection === targetId;
+
+        return (
+          <a
+            key={i}
+            href={targetHref}
+            onClick={() => setOpen(false)}
+            className={`focus-ring px-2.5 py-1.5 border-l-2 transition-colors ${
+              f.indent ? 'pl-6 text-[13px]' : ''
+            } ${
+              isActive
+                ? 'text-accent border-accent bg-white/[0.04]'
+                : 'text-muted border-transparent hover:text-accent hover:border-accent-dim hover:bg-white/[0.02]'
+            }`}
+          >
+            {f.label}
+          </a>
+        );
+      })}
     </nav>
   );
 
@@ -91,10 +135,28 @@ export default function Sidebar() {
 
         {linkList}
 
-        <div className="mt-auto pt-8 font-mono-body text-[11px] text-faint">
+        <div className="mt-auto pt-6 space-y-3 font-mono-body text-[12px]">
+          <a
+            href="https://drive.google.com/file/d/12cmWu28HCIjOfpUJ3lKyZJnWudCkVLPW/view?usp=sharing"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="focus-ring flex items-center justify-between px-3 py-2 border border-accent/40 bg-accent/5 text-accent hover:bg-accent/15 hover:border-accent hover:shadow-[0_0_14px_-3px_rgba(57,255,143,0.35)] transition-all font-semibold group"
+          >
+            <span className="flex items-center gap-2">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-3.5 h-3.5">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                <polyline points="14 2 14 8 20 8" />
+                <line x1="16" y1="13" x2="8" y2="13" />
+                <line x1="16" y1="17" x2="8" y2="17" />
+              </svg>
+              <span>resume.pdf</span>
+            </span>
+            <span className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform text-[10px]">↗</span>
+          </a>
+
           <Link
             to="/blog"
-            className="focus-ring hover:text-accent transition-colors"
+            className="focus-ring block text-faint hover:text-accent transition-colors"
           >
             blog/
           </Link>
@@ -123,16 +185,27 @@ export default function Sidebar() {
 
       {/* Mobile navigation */}
       {open && (
-        <div className="lg:hidden border-b border-border px-5 py-4">
+        <div className="lg:hidden border-b border-border px-5 py-4 space-y-3">
           {linkList}
 
-          <Link
-            to="/blog"
-            onClick={() => setOpen(false)}
-            className="focus-ring block mt-3 font-mono-body text-[13px] text-faint hover:text-accent"
-          >
-            blog/
-          </Link>
+          <div className="pt-3 border-t border-border flex items-center justify-between font-mono-body text-[13px]">
+            <Link
+              to="/blog"
+              onClick={() => setOpen(false)}
+              className="focus-ring text-faint hover:text-accent"
+            >
+              blog/
+            </Link>
+
+            <a
+              href="https://drive.google.com/file/d/12cmWu28HCIjOfpUJ3lKyZJnWudCkVLPW/view?usp=sharing"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="focus-ring flex items-center gap-1.5 px-2.5 py-1 border border-accent bg-accent/10 text-accent font-semibold text-[12px]"
+            >
+              <span>resume.pdf ↗</span>
+            </a>
+          </div>
         </div>
       )}
     </>

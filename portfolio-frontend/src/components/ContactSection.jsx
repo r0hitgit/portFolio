@@ -5,16 +5,19 @@ import { submitContact } from '../api/client';
 export default function ContactSection() {
   const [form, setForm] = useState({ name: '', email: '', message: '' });
   const [status, setStatus] = useState('idle'); // idle | sending | sent | error
+  const [errorMessage, setErrorMessage] = useState('');
 
   async function handleSubmit(e) {
     e.preventDefault();
     setStatus('sending');
+    setErrorMessage('');
     try {
       await submitContact(form);
       setStatus('sent');
       setForm({ name: '', email: '', message: '' });
-    } catch {
+    } catch (err) {
       setStatus('error');
+      setErrorMessage(err?.message || "couldn't send that — try emailing directly instead.");
     }
   }
 
@@ -75,7 +78,7 @@ export default function ContactSection() {
           <p className="text-accent text-[13px]">[ OK ] message sent — I'll get back to you soon.</p>
         )}
         {status === 'error' && (
-          <p className="text-amber text-[13px]">[ ERROR ] couldn't send that — try emailing directly instead.</p>
+          <p className="text-amber text-[13px]">[ ERROR ] {errorMessage}</p>
         )}
       </form>
     </FileSection>

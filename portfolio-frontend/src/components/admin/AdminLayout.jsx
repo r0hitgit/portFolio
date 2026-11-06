@@ -6,7 +6,7 @@ import {
   useLocation,
   useNavigate,
 } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext';
+import { useAuth } from '../../context/useAuth';
 
 /* Logo */
 const Logo = ({ size = 30 }) => {

@@ -9,7 +9,7 @@ export default function FileSection({ id, path, title, children }) {
   return (
     <motion.section
       id={id}
-      className="max-w-3xl px-6 sm:px-12 py-20 border-t border-border"
+      className="max-w-3xl px-6 sm:px-12 py-20 border-t border-border scroll-mt-20"
       initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-80px' }}

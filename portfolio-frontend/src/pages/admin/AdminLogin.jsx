@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext';
+import { useAuth } from '../../context/useAuth';
 
 export default function AdminLogin() {
   const { login } = useAuth();
@@ -20,8 +20,8 @@ export default function AdminLogin() {
     try {
       await login(username, password);
       navigate(redirectTo, { replace: true });
-    } catch {
-      setError('invalid username or password');
+    } catch (err) {
+      setError(err?.message || 'invalid username or password');
     } finally {
       setLoading(false);
     }

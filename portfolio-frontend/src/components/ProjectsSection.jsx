@@ -15,7 +15,8 @@ export default function ProjectsSection({ items }) {
         {items.map((p, i) => (
           <motion.article
             key={p.id ?? i}
-            className="relative pl-5 border-l border-border hover:border-accent transition-colors duration-300 group"
+            id={p.slug || undefined}
+            className="relative pl-5 border-l border-border hover:border-accent transition-colors duration-300 group scroll-mt-24"
             whileHover={{ x: 4 }}
             transition={{ duration: 0.2 }}
           >
@@ -42,6 +43,11 @@ export default function ProjectsSection({ items }) {
                   >
                     [source]
                   </a>
+                )}
+                {p.featured && (
+                  <span className="ml-3 text-[11px] font-mono-body text-accent border border-accent-dim px-1.5 py-0.5 align-middle">
+                    [featured]
+                  </span>
                 )}
               </h3>
               <span className="font-mono-body text-[12px] text-faint">{formatDate(p.projectDate)}</span>

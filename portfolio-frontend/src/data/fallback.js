@@ -49,22 +49,25 @@ export const projects = [
   },
   {
     id: 2,
-    slug: 'transaction-management-gui',
-    title: 'Transaction Management GUI',
-    projectDate: '2025-01-01',
+    slug: 'genericmeds-ai',
+    title: 'GenericMeds AI',
+    projectDate: '2026-04-01',
+    liveUrl: 'https://genericmeds-ai.vercel.app',
+    repoUrl: 'https://github.com/r0hitgit/genericmeds-ai',
     bullets: [
-      'Designed a banking transaction system in Java simulating core account operations: create account, deposit, withdraw, and balance inquiry.',
-      'Built an interactive GUI using JavaFX applying OOP principles — inheritance used to model different account types (savings, current).',
-      'Fixed account-listing display bugs and ensured proper state management across multiple UI scenes.',
+      'Built and deployed an open-source platform for verified generic medicine discovery and price transparency at genericmeds-ai.vercel.app.',
+      'Matches branded prescriptions to verified PMBI generic alternatives by active pharmaceutical ingredients (APIs), strength, and release type, benchmarked against PMBI & NPPA ceiling rates.',
+      'Indexes 10,000+ PMBJP Kendras across India with distance-based locator tools, plus a bilingual (English/Hindi) assistant powered by Google Gemini 1.5 Flash with clinical guardrails.',
+      'Architected serverless SQLite on Vercel via a FastAPI cold-start routine cloning into ephemeral /tmp partition, achieving sub-100ms queries without hosted DB costs; compliant with India\'s DPDP Act 2023.',
     ],
-    techStack: ['Java', 'JavaFX', 'Eclipse IDE', 'OOP'],
+    techStack: ['React', 'Vite', 'Python', 'FastAPI', 'SQLAlchemy', 'SQLite', 'Gemini API', 'Vercel'],
   },
 ];
 
 export const skills = [
   { group: 'languages', label: 'languages', items: ['Java', 'Python', 'JavaScript', 'C/C++'] },
-  { group: 'frameworks', label: 'frameworks_libraries', items: ['Spring Boot', 'Spring Security', 'React', 'Vite', 'Tailwind CSS', 'REST API'] },
-  { group: 'databases', label: 'databases', items: ['MySQL', 'MongoDB', 'PostgreSQL'] },
+  { group: 'frameworks', label: 'frameworks_libraries', items: ['Spring Boot', 'Spring Security', 'FastAPI', 'React', 'Vite', 'Tailwind CSS', 'REST API'] },
+  { group: 'databases', label: 'databases', items: ['PostgreSQL', 'MySQL', 'SQLite', 'MongoDB'] },
   { group: 'tools', label: 'developer_tools', items: ['VS Code', 'IntelliJ IDEA', 'Eclipse', 'Postman', 'Git', 'GitHub', 'Docker'] },
   { group: 'cloud', label: 'cloud_devops', items: ['Render', 'Netlify', 'Vercel', 'Neon'] },
 ];
@@ -72,30 +75,48 @@ export const skills = [
 export const achievements = [
   {
     id: 1,
+    title: 'AI Hackathon — AURIX 2026',
+    organization: 'IILM University, Greater Noida',
+    description: 'Qualified for Round 2 (Rank 2 among the Top 15 teams) in the Software Track of a national-level AI hackathon.',
+    dateLabel: 'Oct 2024',
+    icon: '',
+    link: '',
+  },
+  {
+    id: 2,
     title: 'Dataverse Hackathon — Pre-Final Round',
     organization: 'NSUT, Delhi',
     description: 'Selected for the pre-final round of Dataverse Hackathon hosted at NSUT (Netaji Subhas University of Technology), Delhi — competing among multiple teams from various colleges.',
     dateLabel: 'Sep 2024',
-    icon: '🏆',
+    icon: '',
     link: 'https://drive.google.com/file/d/13S8eRMwndC9JlS7f89BdDJFvArALAm1x/view',
   },
   {
-    id: 2,
-    title: 'LeetCode — 120+ DSA Problems Solved',
+    id: 3,
+    title: 'NCET Plus SDE (Java) Certification — Grade O (Outstanding)',
+    organization: 'MyAnatomy',
+    description: 'Secured 88.44% (Grade O - Outstanding) in the SDE (Java) - NIET College certification program by MyAnatomy, covering Java programming, OOP, data structures, algorithms, and software engineering best practices.',
+    dateLabel: 'Aug 2024',
+    icon: 'MyA',
+    link: '',
+  },
+  {
+    id: 4,
+    title: 'LeetCode — 250+ DSA Problems Solved',
     organization: 'leetcode.com/u/lifeaura',
-    description: 'Solved 120+ problems spanning arrays, strings, searching and sorting algorithms across Easy and Medium difficulty levels.',
+    description: 'Solved 250+ problems spanning arrays, strings, searching, sorting and linkedlist algorithms across Easy and Medium difficulty levels.',
     dateLabel: 'Ongoing',
-    icon: '⚡',
+    icon: '',
     link: 'https://leetcode.com/u/lifeaura/',
   },
 ];
 
 export const interests = [
   { tag: 'FIT', name: 'Fitness & Gym', sub: 'Dedicated gym-goer — consistency, discipline, progressive overload' },
-   { tag: 'DEV', name: 'Full-Stack Web Dev (Java)', sub: 'Building end-to-end apps with Spring Boot & React' },
-   { tag: 'DSA', name: 'Problem Solving', sub: 'DSA grinding on LeetCode — algorithms & data structures' },
-   { tag: 'AI', name: 'AI & Machine Learning', sub: 'Exploring ML through B.Tech specialisation in AI & ML' },
-   { tag: 'HACK', name: 'Hackathons & Competitions', sub: 'Thrives in competitive problem-solving under time pressure' },
+  { tag: 'DEV', name: 'Full-Stack Web Dev (Java)', sub: 'Building end-to-end apps with Spring Boot & React' },
+  { tag: 'DSA', name: 'Problem Solving', sub: 'DSA grinding on LeetCode — algorithms & data structures' },
+  { tag: 'AI', name: 'AI & Machine Learning', sub: 'Exploring ML through B.Tech specialisation in AI & ML' },
+  { tag: 'HACK', name: 'Hackathons & Competitions', sub: 'Thrives in competitive problem-solving under time pressure' },
 ];
 
 export const languages = [
@@ -109,5 +130,6 @@ export const contactLinks = [
   { label: 'r0hiitverma1095@gmail.com', href: 'mailto:r0hiitverma1095@gmail.com', key: 'mail' },
   { label: 'linkedin.com/in/r0hitin', href: 'https://linkedin.com/in/r0hitin', key: 'linkedin' },
   { label: 'github.com/r0hitgit', href: 'https://github.com/r0hitgit', key: 'github' },
+  { label: 'resume.pdf', href: 'https://drive.google.com/file/d/12cmWu28HCIjOfpUJ3lKyZJnWudCkVLPW/view?usp=sharing', key: 'resume' },
   { label: 'nexhire.me', href: 'https://nexhire.me', key: 'site' },
 ];

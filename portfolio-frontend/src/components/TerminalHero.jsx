@@ -35,6 +35,16 @@ const iconFor = (key) => {
       return (
         <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22" />
       );
+    case 'resume':
+      return (
+        <>
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+          <polyline points="14 2 14 8 20 8" />
+          <line x1="16" y1="13" x2="8" y2="13" />
+          <line x1="16" y1="17" x2="8" y2="17" />
+          <line x1="10" y1="9" x2="8" y2="9" />
+        </>
+      );
     default:
       return (
         <>
@@ -52,7 +62,8 @@ export default function TerminalHero() {
   const [skip, setSkip] = useState(false);
 
   useEffect(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const alreadyBooted = typeof window !== 'undefined' && sessionStorage.getItem('portfolio_booted');
+    if (alreadyBooted || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       setSkip(true);
       setShowHero(true);
       return;
@@ -61,7 +72,10 @@ export default function TerminalHero() {
     const timers = BOOT_LINES.map((line, i) =>
       setTimeout(() => setVisibleLines(i + 1), line.delay)
     );
-    const finalTimer = setTimeout(() => setShowHero(true), 1500);
+    const finalTimer = setTimeout(() => {
+      setShowHero(true);
+      sessionStorage.setItem('portfolio_booted', 'true');
+    }, 1500);
 
     return () => {
       timers.forEach(clearTimeout);
@@ -89,7 +103,7 @@ export default function TerminalHero() {
 
       <div
         className={`transition-all duration-700 ${
-          showHero ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3 pointer-events-none h-0'
+          showHero ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3 pointer-events-none h-0 overflow-hidden'
         }`}
       >
         <p className="font-mono-body text-xs tracking-widest text-accent uppercase mb-4 flex items-center gap-2">
@@ -110,10 +124,28 @@ export default function TerminalHero() {
           NIET · Greater Noida &nbsp;·&nbsp; B.Tech CSE (AI &amp; ML) &nbsp;·&nbsp; Class of 2027
         </p>
 
-        <div className="font-mono-body text-[13px] border border-border bg-card/40 px-4 py-3.5 mb-8 max-w-lg space-y-1.5">
-          <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-accent pulse-dot" />
-            <span className="text-accent">open to SDE internship opportunities</span>
+        <div className="font-mono-body text-[13px] border border-border bg-card/40 px-4 py-3.5 mb-8 max-w-lg space-y-2">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <div className="flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-accent pulse-dot" />
+              <span className="text-accent font-semibold">open to SDE internship opportunities</span>
+            </div>
+            <a
+              href="https://drive.google.com/file/d/12cmWu28HCIjOfpUJ3lKyZJnWudCkVLPW/view?usp=sharing"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="focus-ring inline-flex items-center gap-1.5 px-2.5 py-1 border border-accent bg-accent/10 text-accent hover:bg-accent hover:text-bg transition-all font-semibold text-[12px] group"
+              title="Open Rohit Verma's Resume"
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-3.5 h-3.5">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                <polyline points="14 2 14 8 20 8" />
+                <line x1="16" y1="13" x2="8" y2="13" />
+                <line x1="16" y1="17" x2="8" y2="17" />
+              </svg>
+              <span>resume.pdf</span>
+              <span className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform text-[10px]">↗</span>
+            </a>
           </div>
           <div className="text-muted">
             <span className="text-faint">focus:</span> DSA (Java) + exploring System Design
@@ -133,7 +165,11 @@ export default function TerminalHero() {
               href={link.href}
               target={link.href.startsWith('http') ? '_blank' : undefined}
               rel="noopener noreferrer"
-              className="focus-ring group flex items-center gap-2 px-4 py-2.5 border border-border text-[14px] text-muted hover:text-accent hover:border-accent-dim hover:shadow-[0_0_16px_-4px_rgba(57,255,143,0.35)] transition-all font-mono-body max-w-full break-all sm:break-normal"
+              className={`focus-ring group flex items-center gap-2 px-4 py-2.5 border text-[14px] transition-all font-mono-body max-w-full break-all sm:break-normal ${
+                link.key === 'resume'
+                  ? 'border-accent text-accent bg-accent/10 hover:bg-accent/20 hover:border-accent hover:shadow-[0_0_18px_-3px_rgba(57,255,143,0.45)] font-semibold'
+                  : 'border-border text-muted hover:text-accent hover:border-accent-dim hover:shadow-[0_0_16px_-4px_rgba(57,255,143,0.35)]'
+              }`}
             >
               <svg
                 viewBox="0 0 24 24"
@@ -145,6 +181,9 @@ export default function TerminalHero() {
                 {iconFor(link.key)}
               </svg>
               {link.label}
+              {link.href.startsWith('http') && (
+                <span className="text-[11px] opacity-60 group-hover:opacity-100 transition-opacity">↗</span>
+              )}
             </a>
           ))}
         </div>

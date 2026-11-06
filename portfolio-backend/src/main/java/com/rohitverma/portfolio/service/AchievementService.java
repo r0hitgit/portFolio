@@ -19,6 +19,12 @@ public class AchievementService {
         return achievementRepository.findAllByOrderByDisplayOrderAsc();
     }
 
+    private String sanitizeIcon(String icon) {
+        if (icon == null) return null;
+        String clean = icon.replaceAll("[\\x{10000}-\\x{10ffff}\\u2600-\\u27bf\\u2300-\\u23ff]", "").trim();
+        return clean.isEmpty() ? null : clean;
+    }
+
     public Achievement create(AchievementRequest req) {
         Achievement achievement = Achievement.builder()
                 .title(req.title())
@@ -26,7 +32,7 @@ public class AchievementService {
                 .description(req.description())
                 .dateLabel(req.dateLabel())
                 .link(req.link())
-                .icon(req.icon())
+                .icon(sanitizeIcon(req.icon()))
                 .displayOrder(req.displayOrder() != null ? req.displayOrder() : 0)
                 .build();
         return achievementRepository.save(achievement);
@@ -41,7 +47,11 @@ public class AchievementService {
         achievement.setDescription(req.description());
         achievement.setDateLabel(req.dateLabel());
         achievement.setLink(req.link());
-        achievement.setIcon(req.icon());
+        if (req.icon() != null) {
+            achievement.setIcon(sanitizeIcon(req.icon()));
+        } else if (achievement.getIcon() != null) {
+            achievement.setIcon(sanitizeIcon(achievement.getIcon()));
+        }
         if (req.displayOrder() != null) achievement.setDisplayOrder(req.displayOrder());
 
         return achievementRepository.save(achievement);

@@ -135,28 +135,10 @@ export default function Sidebar() {
 
         {linkList}
 
-        <div className="mt-auto pt-6 space-y-3 font-mono-body text-[12px]">
-          <a
-            href="https://drive.google.com/file/d/12cmWu28HCIjOfpUJ3lKyZJnWudCkVLPW/view?usp=sharing"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="focus-ring flex items-center justify-between px-3 py-2 border border-accent/40 bg-accent/5 text-accent hover:bg-accent/15 hover:border-accent hover:shadow-[0_0_14px_-3px_rgba(57,255,143,0.35)] transition-all font-semibold group"
-          >
-            <span className="flex items-center gap-2">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-3.5 h-3.5">
-                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                <polyline points="14 2 14 8 20 8" />
-                <line x1="16" y1="13" x2="8" y2="13" />
-                <line x1="16" y1="17" x2="8" y2="17" />
-              </svg>
-              <span>resume.pdf</span>
-            </span>
-            <span className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform text-[10px]">↗</span>
-          </a>
-
+        <div className="mt-auto pt-8 font-mono-body text-[11px] text-faint">
           <Link
             to="/blog"
-            className="focus-ring block text-faint hover:text-accent transition-colors"
+            className="focus-ring hover:text-accent transition-colors"
           >
             blog/
           </Link>
@@ -185,27 +167,16 @@ export default function Sidebar() {
 
       {/* Mobile navigation */}
       {open && (
-        <div className="lg:hidden border-b border-border px-5 py-4 space-y-3">
+        <div className="lg:hidden border-b border-border px-5 py-4">
           {linkList}
 
-          <div className="pt-3 border-t border-border flex items-center justify-between font-mono-body text-[13px]">
-            <Link
-              to="/blog"
-              onClick={() => setOpen(false)}
-              className="focus-ring text-faint hover:text-accent"
-            >
-              blog/
-            </Link>
-
-            <a
-              href="https://drive.google.com/file/d/12cmWu28HCIjOfpUJ3lKyZJnWudCkVLPW/view?usp=sharing"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="focus-ring flex items-center gap-1.5 px-2.5 py-1 border border-accent bg-accent/10 text-accent font-semibold text-[12px]"
-            >
-              <span>resume.pdf ↗</span>
-            </a>
-          </div>
+          <Link
+            to="/blog"
+            onClick={() => setOpen(false)}
+            className="focus-ring block mt-3 font-mono-body text-[13px] text-faint hover:text-accent"
+          >
+            blog/
+          </Link>
         </div>
       )}
     </>

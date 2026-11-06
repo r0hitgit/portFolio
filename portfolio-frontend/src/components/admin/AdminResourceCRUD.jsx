@@ -63,7 +63,11 @@ export default function AdminResourceCRUD({
   function openNew() {
     const blank = {};
     fields.forEach((f) => {
-      blank[f.key] = f.type === 'checkbox' ? false : '';
+      if (f.key === 'displayOrder') {
+        blank[f.key] = (items?.length || 0) + 1;
+      } else {
+        blank[f.key] = f.type === 'checkbox' ? false : '';
+      }
     });
     setForm(blank);
     setEditing({});
@@ -170,17 +174,22 @@ export default function AdminResourceCRUD({
 
       {items !== null && items.length > 0 && (
         <div className="border border-border">
-          {items.map((item) => (
+          {items.map((item, idx) => (
             <div
               key={item.id}
               className="flex items-center justify-between gap-4 px-4 py-3 border-b border-border last:border-b-0 hover:bg-white/[0.02]"
             >
-              <div className="min-w-0 flex-1 font-mono-body text-[13px] text-muted flex flex-wrap gap-x-4 gap-y-1">
-                {displayCols.map((key) => (
-                  <span key={key} className="truncate max-w-xs">
-                    {String(item[key] ?? '—')}
-                  </span>
-                ))}
+              <div className="flex items-center gap-3 min-w-0 flex-1">
+                <span className="font-mono-display font-bold text-accent text-[12px] shrink-0 border border-border px-1.5 py-0.5">
+                  {String(idx + 1).padStart(2, '0')}
+                </span>
+                <div className="min-w-0 flex-1 font-mono-body text-[13px] text-muted flex flex-wrap gap-x-4 gap-y-1">
+                  {displayCols.map((key) => (
+                    <span key={key} className="truncate max-w-xs">
+                      {String(item[key] ?? '—')}
+                    </span>
+                  ))}
+                </div>
               </div>
               <div className="flex gap-2 shrink-0 font-mono-body text-[12px]">
                 <button

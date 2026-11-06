@@ -63,12 +63,24 @@ public class SecurityConfig {
                 .filter(s -> !s.isEmpty())
                 .toList();
 
-        if (origins.contains("*")) {
-            config.setAllowedOriginPatterns(List.of("*"));
-        } else {
-            config.setAllowedOrigins(origins);
+        // Always permit local development origins (localhost & 127.0.0.1 on any port)
+        List<String> patterns = new java.util.ArrayList<>(List.of(
+                "http://localhost:*",
+                "http://127.0.0.1:*",
+                "http://192.168.*.*",
+                "https://*.vercel.app",
+                "https://*.netlify.app"
+        ));
+
+        for (String o : origins) {
+            if (o.equals("*")) {
+                patterns.add("*");
+            } else if (!patterns.contains(o)) {
+                patterns.add(o);
+            }
         }
 
+        config.setAllowedOriginPatterns(patterns);
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD", "PATCH"));
         config.setAllowedHeaders(List.of("*"));
         config.setExposedHeaders(List.of("Authorization", "Content-Disposition"));

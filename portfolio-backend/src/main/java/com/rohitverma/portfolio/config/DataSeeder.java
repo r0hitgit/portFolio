@@ -2,6 +2,7 @@ package com.rohitverma.portfolio.config;
 
 import com.rohitverma.portfolio.entity.*;
 import com.rohitverma.portfolio.repository.*;
+import com.rohitverma.portfolio.service.ProfileSettingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
@@ -23,6 +24,7 @@ public class DataSeeder implements CommandLineRunner {
     private final AchievementRepository achievementRepository;
     private final EducationEntryRepository educationEntryRepository;
     private final SkillGroupRepository skillGroupRepository;
+    private final ProfileSettingRepository profileSettingRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Value("${ADMIN_USERNAME:admin}")
@@ -38,6 +40,7 @@ public class DataSeeder implements CommandLineRunner {
         seedProjects();
         seedAchievements();
         seedSkills();
+        seedSettings();
         cleanupAchievementEmojis();
     }
 
@@ -195,6 +198,15 @@ public class DataSeeder implements CommandLineRunner {
                         .displayOrder(5)
                         .build()
         ));
+    }
+
+    private void seedSettings() {
+        if (profileSettingRepository.findByKey(ProfileSettingService.KEY_RESUME_URL).isEmpty()) {
+            profileSettingRepository.save(ProfileSetting.builder()
+                    .key(ProfileSettingService.KEY_RESUME_URL)
+                    .value(ProfileSettingService.DEFAULT_RESUME_URL)
+                    .build());
+        }
     }
 
     private void cleanupAchievementEmojis() {

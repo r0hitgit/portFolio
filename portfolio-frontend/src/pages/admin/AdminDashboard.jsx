@@ -4,6 +4,7 @@ import { useAuth } from '../../context/useAuth';
 import { getProjects, getAchievements, getEducation, getSkills, adminApi } from '../../api/client';
 
 const CARDS = [
+  { to: '/admin/resume', label: 'resume.pdf', countKey: 'resume', desc: 'update Google Drive / cloud resume link' },
   { to: '/admin/projects', label: 'projects/', countKey: 'projects', desc: 'manage project entries' },
   { to: '/admin/skills', label: 'skills.json', countKey: 'skills', desc: 'manage what I work with' },
   { to: '/admin/posts', label: 'posts/', countKey: 'posts', desc: 'write and publish blog posts' },
@@ -60,11 +61,15 @@ export default function AdminDashboard() {
           >
             <div className="flex items-center justify-between mb-1">
               <p className="font-mono-display font-bold text-accent">{c.label}</p>
-              {counts[c.countKey] !== null && (
+              {c.countKey === 'resume' ? (
+                <span className="font-mono-body text-[11px] text-accent border border-accent/40 bg-accent/10 px-2 py-0.5">
+                  manage
+                </span>
+              ) : counts[c.countKey] !== null ? (
                 <span className="font-mono-body text-[11px] text-faint border border-border px-2 py-0.5">
                   {counts[c.countKey]} {counts[c.countKey] === 1 ? 'item' : 'items'}
                 </span>
-              )}
+              ) : null}
             </div>
             <p className="text-muted text-[13px] font-light">{c.desc}</p>
           </Link>

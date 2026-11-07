@@ -41,10 +41,10 @@ public class SecurityConfig {
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers(org.springframework.http.HttpMethod.GET,
                                 "/api/projects/**", "/api/posts/**", "/api/achievements/**",
-                                "/api/education/**", "/api/skills/**").permitAll()
+                                "/api/education/**", "/api/skills/**", "/api/settings/**").permitAll()
                         .requestMatchers(org.springframework.http.HttpMethod.HEAD,
                                 "/api/projects/**", "/api/posts/**", "/api/achievements/**",
-                                "/api/education/**", "/api/skills/**").permitAll()
+                                "/api/education/**", "/api/skills/**", "/api/settings/**").permitAll()
                         .requestMatchers("/api/contact", "/api/contact/**").permitAll()
                         .requestMatchers("/actuator/health", "/api/health").permitAll()
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")

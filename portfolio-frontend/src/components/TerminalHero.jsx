@@ -56,10 +56,14 @@ const iconFor = (key) => {
   }
 };
 
-export default function TerminalHero() {
+export default function TerminalHero({ resumeUrl }) {
   const [visibleLines, setVisibleLines] = useState(0);
   const [showHero, setShowHero] = useState(false);
   const [skip, setSkip] = useState(false);
+
+  const links = contactLinks.map((link) =>
+    link.key === 'resume' && resumeUrl ? { ...link, href: resumeUrl } : link
+  );
 
   useEffect(() => {
     const alreadyBooted = typeof window !== 'undefined' && sessionStorage.getItem('portfolio_booted');
@@ -141,7 +145,7 @@ export default function TerminalHero() {
         </div>
 
         <div className="flex flex-wrap gap-3">
-          {contactLinks.map((link) => (
+          {links.map((link) => (
             <a
               key={link.key}
               href={link.href}

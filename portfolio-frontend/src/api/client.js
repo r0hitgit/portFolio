@@ -41,6 +41,17 @@ export function getSkills(fallback) {
   return get('/api/skills', fallback);
 }
 
+export async function getResumeUrl(fallback) {
+  try {
+    const res = await fetch(`${BASE_URL}/api/settings/resume`);
+    if (!res.ok) throw new Error(`${res.status}`);
+    const data = await res.json();
+    return data?.resumeUrl || fallback;
+  } catch {
+    return fallback;
+  }
+}
+
 export async function submitContact(payload) {
   let res;
   try {
@@ -133,6 +144,9 @@ export const adminApi = {
   updateSkill: (id, data) => authedRequest('PUT', `/api/admin/skills/${id}`, data),
   deleteSkill: (id) => authedRequest('DELETE', `/api/admin/skills/${id}`),
 
-   listMessages: () => authedRequest('GET', '/api/admin/messages'),
-    deleteMessage: (id) => authedRequest('DELETE', `/api/admin/messages/${id}`),
+  getSettings: () => authedRequest('GET', '/api/admin/settings'),
+  updateResumeUrl: (resumeUrl) => authedRequest('PUT', '/api/admin/settings/resume', { resumeUrl }),
+
+  listMessages: () => authedRequest('GET', '/api/admin/messages'),
+  deleteMessage: (id) => authedRequest('DELETE', `/api/admin/messages/${id}`),
 };

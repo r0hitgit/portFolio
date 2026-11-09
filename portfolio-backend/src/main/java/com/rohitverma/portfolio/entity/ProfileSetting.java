@@ -19,3 +19,4 @@ public class ProfileSetting {
     @Column(name = "setting_value", columnDefinition = "TEXT")
     private String value;
 }
+

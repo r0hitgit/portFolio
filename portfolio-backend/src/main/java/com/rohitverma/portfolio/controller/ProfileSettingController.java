@@ -25,3 +25,4 @@ public class ProfileSettingController {
         return Map.of("resumeUrl", profileSettingService.getResumeUrl());
     }
 }
+

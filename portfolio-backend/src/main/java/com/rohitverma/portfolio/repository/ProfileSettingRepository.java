@@ -11,3 +11,4 @@ public interface ProfileSettingRepository extends JpaRepository<ProfileSetting, 
 
     Optional<ProfileSetting> findByKey(String key);
 }
+

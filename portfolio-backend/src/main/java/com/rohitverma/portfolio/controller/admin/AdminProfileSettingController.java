@@ -26,3 +26,4 @@ public class AdminProfileSettingController {
         return Map.of("resumeUrl", updated);
     }
 }
+

@@ -7,7 +7,7 @@ import AchievementsSection from '../components/AchievementsSection';
 import InterestsSection from '../components/InterestsSection';
 import ContactSection from '../components/ContactSection';
 import Footer from '../components/Footer';
-import { getProjects, getAchievements, getEducation, getSkills, getResumeUrl } from '../api/client';
+import { getProjects, getAchievements, getEducation, getSkills, getResumeUrl, getCached } from '../api/client';
 import {
   education as fallbackEducation,
   projects as fallbackProjects,
@@ -21,11 +21,11 @@ import {
 const defaultResume = contactLinks.find((c) => c.key === 'resume')?.href || '';
 
 export default function Home() {
-  const [education, setEducation] = useState(fallbackEducation);
-  const [projects, setProjects] = useState(fallbackProjects);
-  const [achievements, setAchievements] = useState(fallbackAchievements);
-  const [skills, setSkills] = useState(fallbackSkills);
-  const [resumeUrl, setResumeUrl] = useState(defaultResume);
+  const [education, setEducation] = useState(() => getCached('education', fallbackEducation));
+  const [projects, setProjects] = useState(() => getCached('projects', fallbackProjects));
+  const [achievements, setAchievements] = useState(() => getCached('achievements', fallbackAchievements));
+  const [skills, setSkills] = useState(() => getCached('skills', fallbackSkills));
+  const [resumeUrl, setResumeUrl] = useState(() => getCached('resume', defaultResume));
 
   useEffect(() => {
     getEducation(fallbackEducation).then(setEducation);

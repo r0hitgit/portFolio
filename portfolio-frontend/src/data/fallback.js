@@ -7,27 +7,9 @@ export const education = [
     institution: 'Noida Institute of Engineering and Technology (NIET)',
     degree: 'B.Tech — Computer Science & Engineering (AI & ML)',
     location: 'Greater Noida',
-    scoreLabel: '7.7 CGPA',
+    scoreLabel: '7.73 CGPA',
     startLabel: 'Oct 2023',
     endLabel: 'May 2027',
-  },
-  {
-    id: 2,
-    institution: 'Saraswati Shishu Mandir Sr Sec School',
-    degree: 'CBSE Class XII (AISSCE)',
-    location: 'Gorakhpur',
-    scoreLabel: '',
-    startLabel: '2021',
-    endLabel: '2022',
-  },
-  {
-    id: 3,
-    institution: 'Saraswati Shishu Mandir Sr Sec School',
-    degree: 'CBSE Class X (CCE)',
-    location: 'Gorakhpur',
-    scoreLabel: '',
-    startLabel: '2019',
-    endLabel: '2020',
   },
 ];
 

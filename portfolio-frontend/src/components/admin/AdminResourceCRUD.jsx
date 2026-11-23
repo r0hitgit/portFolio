@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import { useAuth } from '../../context/useAuth';
 import { useNavigate } from 'react-router-dom';
+import { clearCache } from '../../api/client';
 
 /**
  * Generic list + create/edit form for one admin-managed resource.
@@ -130,6 +131,7 @@ export default function AdminResourceCRUD({
       } else {
         await onCreate(payload);
       }
+      clearCache(path);
       closeForm();
       await load();
     } catch (err) {
@@ -143,6 +145,7 @@ export default function AdminResourceCRUD({
     if (!window.confirm('Delete this item? This cannot be undone.')) return;
     try {
       await onDelete(id);
+      clearCache(path);
       await load();
     } catch (err) {
       if (!handleAuthError(err)) alert(err.message || 'Delete failed');

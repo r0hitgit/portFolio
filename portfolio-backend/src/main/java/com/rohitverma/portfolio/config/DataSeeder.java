@@ -42,6 +42,7 @@ public class DataSeeder implements CommandLineRunner {
         seedSkills();
         seedSettings();
         cleanupAchievementEmojis();
+        cleanupOldEducationEntries();
     }
 
     private void seedAdminUser() {
@@ -68,30 +69,23 @@ public class DataSeeder implements CommandLineRunner {
                         .institution("Noida Institute of Engineering and Technology (NIET)")
                         .degree("B.Tech — Computer Science & Engineering (AI & ML)")
                         .location("Greater Noida")
-                        .scoreLabel("7.7 CGPA")
+                        .scoreLabel("7.73 CGPA")
                         .startLabel("Oct 2023")
                         .endLabel("May 2027")
                         .displayOrder(1)
-                        .build(),
-                EducationEntry.builder()
-                        .institution("Saraswati Shishu Mandir Sr Sec School")
-                        .degree("CBSE Class XII (AISSCE)")
-                        .location("Gorakhpur")
-                        .scoreLabel("")
-                        .startLabel("2021")
-                        .endLabel("2022")
-                        .displayOrder(2)
-                        .build(),
-                EducationEntry.builder()
-                        .institution("Saraswati Shishu Mandir Sr Sec School")
-                        .degree("CBSE Class X (CCE)")
-                        .location("Gorakhpur")
-                        .scoreLabel("")
-                        .startLabel("2019")
-                        .endLabel("2020")
-                        .displayOrder(3)
                         .build()
         ));
+    }
+
+    private void cleanupOldEducationEntries() {
+        educationEntryRepository.findAll().forEach(entry -> {
+            if (entry.getInstitution() != null && entry.getInstitution().contains("Saraswati Shishu Mandir")) {
+                educationEntryRepository.delete(entry);
+            } else if (entry.getInstitution() != null && entry.getInstitution().contains("NIET") && "7.7 CGPA".equals(entry.getScoreLabel())) {
+                entry.setScoreLabel("7.73 CGPA");
+                educationEntryRepository.save(entry);
+            }
+        });
     }
 
     private void seedProjects() {

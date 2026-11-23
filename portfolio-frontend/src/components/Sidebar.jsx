@@ -189,8 +189,8 @@ export default function Sidebar() {
 
   return (
     <>
-      {/* Desktop sidebar */}
-      <aside className="hidden lg:flex flex-col w-64 shrink-0 h-screen sticky top-0 border-r border-border px-5 py-8">
+      {/* Desktop sidebar with modern glassmorphism */}
+      <aside className="hidden lg:flex flex-col w-64 shrink-0 h-screen sticky top-0 px-5 py-8 glass-sidebar">
         <Link
           to="/"
           className="focus-ring inline-flex items-center mb-2"
@@ -215,8 +215,8 @@ export default function Sidebar() {
         </div>
       </aside>
 
-      {/* Mobile FIXED top bar: pinned so it never moves while scrolling */}
-      <header className="lg:hidden fixed top-0 left-0 right-0 z-40 h-16 flex items-center justify-between border-b border-border bg-bg/95 backdrop-blur px-5">
+      {/* Mobile FIXED top bar with modern glassmorphism */}
+      <header className="lg:hidden fixed top-0 left-0 right-0 z-40 h-16 flex items-center justify-between px-5 glass-nav">
         <Link
           to="/"
           onClick={() => {
@@ -232,7 +232,7 @@ export default function Sidebar() {
         </Link>
 
         <button
-          className="focus-ring font-mono-body text-xs text-muted border border-border px-3 py-1.5 hover:text-accent hover:border-accent-dim transition-colors"
+          className="focus-ring font-mono-body text-xs text-muted px-3 py-1.5 glass-btn"
           onClick={() => setOpen((v) => !v)}
           aria-expanded={open}
           aria-label="Toggle navigation menu"
@@ -261,28 +261,28 @@ export default function Sidebar() {
               aria-hidden="true"
             />
 
-            {/* Slide-out drawer panel (right to left) */}
+            {/* Slide-out drawer panel with modern glassmorphism (right to left) */}
             <motion.aside
               key="drawer-panel"
               initial={{ x: '100%' }}
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: 'spring', damping: 28, stiffness: 280 }}
-              className="lg:hidden fixed top-0 right-0 bottom-0 z-50 w-72 sm:w-80 max-w-[85vw] h-full bg-bg border-l border-border shadow-[-14px_0_35px_rgba(0,0,0,0.85)] flex flex-col justify-between p-6 overflow-y-auto overscroll-contain"
+              className="lg:hidden fixed top-0 right-0 bottom-0 z-50 w-72 sm:w-80 max-w-[85vw] h-full flex flex-col justify-between p-6 overflow-y-auto overscroll-contain glass-drawer"
               role="dialog"
               aria-modal="true"
               aria-label="Navigation menu"
             >
               <div>
                 {/* Drawer header */}
-                <div className="flex items-center justify-between pb-4 border-b border-border mb-6">
+                <div className="flex items-center justify-between pb-4 border-b border-white/[0.08] mb-6">
                   <div>
                     <p className="font-mono-body text-[11px] text-faint">~/rohit-verma</p>
                     <p className="font-mono-display font-bold text-sm text-text">menu</p>
                   </div>
                   <button
                     onClick={() => setOpen(false)}
-                    className="focus-ring font-mono-body text-xs text-muted hover:text-accent border border-border hover:border-accent px-2.5 py-1 transition-colors"
+                    className="focus-ring font-mono-body text-xs text-muted px-2.5 py-1 glass-btn"
                     aria-label="Close menu"
                   >
                     [x] close
@@ -294,11 +294,11 @@ export default function Sidebar() {
               </div>
 
               {/* Drawer footer */}
-              <div className="pt-6 border-t border-border mt-8 space-y-3 font-mono-body text-[12px]">
+              <div className="pt-6 border-t border-white/[0.08] mt-8 space-y-3 font-mono-body text-[12px]">
                 <Link
                   to="/blog"
                   onClick={() => setOpen(false)}
-                  className="focus-ring flex items-center justify-between text-muted hover:text-accent border border-border hover:border-accent-dim px-3 py-2 transition-colors"
+                  className="focus-ring flex items-center justify-between text-muted px-3 py-2 glass-btn"
                 >
                   <span>blog/</span>
                   <span className="text-[11px] opacity-60">&rarr;</span>

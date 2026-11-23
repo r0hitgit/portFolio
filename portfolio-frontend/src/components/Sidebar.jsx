@@ -190,7 +190,13 @@ export default function Sidebar() {
   return (
     <>
       {/* Desktop sidebar with modern glassmorphism */}
-      <aside className="hidden lg:flex flex-col w-64 shrink-0 h-screen sticky top-0 px-5 py-8 glass-sidebar">
+      <aside
+        className="hidden lg:flex flex-col w-64 shrink-0 h-screen sticky top-0 px-5 py-8 glass-sidebar"
+        style={{
+          backdropFilter: 'blur(20px) saturate(190%)',
+          WebkitBackdropFilter: 'blur(20px) saturate(190%)',
+        }}
+      >
         <Link
           to="/"
           className="focus-ring inline-flex items-center mb-2"
@@ -215,8 +221,14 @@ export default function Sidebar() {
         </div>
       </aside>
 
-      {/* Mobile FIXED top bar with modern glassmorphism */}
-      <header className="lg:hidden fixed top-0 left-0 right-0 z-40 h-16 flex items-center justify-between px-5 glass-nav">
+      {/* Mobile FIXED top bar with modern glassmorphism (Apple-style frosted glass) */}
+      <header
+        className="lg:hidden fixed top-0 left-0 right-0 z-40 h-16 flex items-center justify-between px-5 glass-nav"
+        style={{
+          backdropFilter: 'blur(20px) saturate(190%)',
+          WebkitBackdropFilter: 'blur(20px) saturate(190%)',
+        }}
+      >
         <Link
           to="/"
           onClick={() => {
@@ -233,6 +245,10 @@ export default function Sidebar() {
 
         <button
           className="focus-ring font-mono-body text-xs text-muted px-3 py-1.5 glass-btn"
+          style={{
+            backdropFilter: 'blur(10px)',
+            WebkitBackdropFilter: 'blur(10px)',
+          }}
           onClick={() => setOpen((v) => !v)}
           aria-expanded={open}
           aria-label="Toggle navigation menu"
@@ -269,6 +285,10 @@ export default function Sidebar() {
               exit={{ x: '100%' }}
               transition={{ type: 'spring', damping: 28, stiffness: 280 }}
               className="lg:hidden fixed top-0 right-0 bottom-0 z-50 w-72 sm:w-80 max-w-[85vw] h-full flex flex-col justify-between p-6 overflow-y-auto overscroll-contain glass-drawer"
+              style={{
+                backdropFilter: 'blur(24px) saturate(190%)',
+                WebkitBackdropFilter: 'blur(24px) saturate(190%)',
+              }}
               role="dialog"
               aria-modal="true"
               aria-label="Navigation menu"

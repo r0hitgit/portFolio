@@ -61,18 +61,38 @@ export default function Sidebar() {
   // Close drawer on route change
   useEffect(() => {
     setOpen(false);
-    document.body.style.overflow = '';
   }, [location.pathname]);
 
-  // Lock body scroll when mobile menu is open
+  // True mobile (iOS Safari & Android) and desktop scroll lock
   useEffect(() => {
     if (open) {
+      const scrollY = window.scrollY;
+      document.documentElement.style.overflow = 'hidden';
       document.body.style.overflow = 'hidden';
+      document.body.style.position = 'fixed';
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.width = '100%';
     } else {
+      const scrollY = document.body.style.top;
+      document.documentElement.style.overflow = '';
       document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.width = '';
+      if (scrollY) {
+        window.scrollTo(0, parseInt(scrollY || '0', 10) * -1);
+      }
     }
     return () => {
+      const scrollY = document.body.style.top;
+      document.documentElement.style.overflow = '';
       document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.width = '';
+      if (scrollY) {
+        window.scrollTo(0, parseInt(scrollY || '0', 10) * -1);
+      }
     };
   }, [open]);
 
@@ -81,7 +101,6 @@ export default function Sidebar() {
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') {
         setOpen(false);
-        document.body.style.overflow = '';
       }
     };
     window.addEventListener('keydown', handleKeyDown);
@@ -120,19 +139,20 @@ export default function Sidebar() {
   }, [isHome]);
 
   const handleLinkClick = (e, f) => {
-    setOpen(false);
-    document.body.style.overflow = '';
+    const isAnchor = isHome && f.href.startsWith('#');
+    const targetId = f.href.replace(/^#/, '');
 
-    if (isHome && f.href.startsWith('#')) {
+    setOpen(false);
+
+    if (isAnchor) {
       e.preventDefault();
-      const targetId = f.href.replace(/^#/, '');
-      const element = document.getElementById(targetId);
-      if (element) {
-        setTimeout(() => {
+      setTimeout(() => {
+        const element = document.getElementById(targetId);
+        if (element) {
           element.scrollIntoView({ behavior: 'smooth' });
           window.history.pushState(null, '', f.href);
-        }, 100);
-      }
+        }
+      }, 50);
     }
   };
 
@@ -195,13 +215,12 @@ export default function Sidebar() {
         </div>
       </aside>
 
-      {/* Mobile top bar */}
-      <div className="lg:hidden sticky top-0 z-40 flex items-center justify-between border-b border-border bg-bg/90 backdrop-blur px-5 py-4">
+      {/* Mobile FIXED top bar: pinned so it never moves while scrolling */}
+      <header className="lg:hidden fixed top-0 left-0 right-0 z-40 h-16 flex items-center justify-between border-b border-border bg-bg/95 backdrop-blur px-5">
         <Link
           to="/"
           onClick={() => {
             setOpen(false);
-            document.body.style.overflow = '';
             if (isHome) {
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }
@@ -220,24 +239,25 @@ export default function Sidebar() {
         >
           {open ? 'close' : 'menu'}
         </button>
-      </div>
+      </header>
+
+      {/* Mobile top bar spacer to prevent content from hiding beneath fixed header */}
+      <div className="lg:hidden h-16 w-full shrink-0" aria-hidden="true" />
 
       {/* Mobile horizontal drawer (opens from right to left) */}
       <AnimatePresence>
         {open && (
           <>
-            {/* Backdrop overlay */}
+            {/* Backdrop overlay: blocks touches and locks scroll */}
             <motion.div
               key="drawer-backdrop"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
-              onClick={() => {
-                setOpen(false);
-                document.body.style.overflow = '';
-              }}
-              className="lg:hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm"
+              onClick={() => setOpen(false)}
+              onTouchMove={(e) => e.preventDefault()}
+              className="lg:hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm touch-none"
               aria-hidden="true"
             />
 
@@ -248,7 +268,7 @@ export default function Sidebar() {
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: 'spring', damping: 28, stiffness: 280 }}
-              className="lg:hidden fixed top-0 right-0 bottom-0 z-50 w-72 sm:w-80 max-w-[85vw] h-full bg-bg border-l border-border shadow-[-14px_0_35px_rgba(0,0,0,0.85)] flex flex-col justify-between p-6 overflow-y-auto"
+              className="lg:hidden fixed top-0 right-0 bottom-0 z-50 w-72 sm:w-80 max-w-[85vw] h-full bg-bg border-l border-border shadow-[-14px_0_35px_rgba(0,0,0,0.85)] flex flex-col justify-between p-6 overflow-y-auto overscroll-contain"
               role="dialog"
               aria-modal="true"
               aria-label="Navigation menu"
@@ -261,10 +281,7 @@ export default function Sidebar() {
                     <p className="font-mono-display font-bold text-sm text-text">menu</p>
                   </div>
                   <button
-                    onClick={() => {
-                      setOpen(false);
-                      document.body.style.overflow = '';
-                    }}
+                    onClick={() => setOpen(false)}
                     className="focus-ring font-mono-body text-xs text-muted hover:text-accent border border-border hover:border-accent px-2.5 py-1 transition-colors"
                     aria-label="Close menu"
                   >
@@ -280,10 +297,7 @@ export default function Sidebar() {
               <div className="pt-6 border-t border-border mt-8 space-y-3 font-mono-body text-[12px]">
                 <Link
                   to="/blog"
-                  onClick={() => {
-                    setOpen(false);
-                    document.body.style.overflow = '';
-                  }}
+                  onClick={() => setOpen(false)}
                   className="focus-ring flex items-center justify-between text-muted hover:text-accent border border-border hover:border-accent-dim px-3 py-2 transition-colors"
                 >
                   <span>blog/</span>

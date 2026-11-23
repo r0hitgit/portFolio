@@ -33,6 +33,14 @@ export default function Home() {
     getAchievements(fallbackAchievements).then(setAchievements);
     getSkills(fallbackSkills).then(setSkills);
     getResumeUrl(defaultResume).then(setResumeUrl);
+
+    if (window.location.hash) {
+      const id = window.location.hash.replace(/^#/, '');
+      const el = document.getElementById(id);
+      if (el) {
+        setTimeout(() => el.scrollIntoView({ behavior: 'smooth' }), 120);
+      }
+    }
   }, []);
 
   return (

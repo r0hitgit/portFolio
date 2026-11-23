@@ -61,6 +61,7 @@ export default function Sidebar() {
   // Close drawer on route change
   useEffect(() => {
     setOpen(false);
+    document.body.style.overflow = '';
   }, [location.pathname]);
 
   // Lock body scroll when mobile menu is open
@@ -78,7 +79,10 @@ export default function Sidebar() {
   // Close drawer on Escape key press
   useEffect(() => {
     const handleKeyDown = (e) => {
-      if (e.key === 'Escape') setOpen(false);
+      if (e.key === 'Escape') {
+        setOpen(false);
+        document.body.style.overflow = '';
+      }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
@@ -115,7 +119,24 @@ export default function Sidebar() {
     return () => observer.disconnect();
   }, [isHome]);
 
-  const renderNavLinks = (onItemClick) => (
+  const handleLinkClick = (e, f) => {
+    setOpen(false);
+    document.body.style.overflow = '';
+
+    if (isHome && f.href.startsWith('#')) {
+      e.preventDefault();
+      const targetId = f.href.replace(/^#/, '');
+      const element = document.getElementById(targetId);
+      if (element) {
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: 'smooth' });
+          window.history.pushState(null, '', f.href);
+        }, 100);
+      }
+    }
+  };
+
+  const renderNavLinks = (isMobile = false) => (
     <nav className="flex flex-col gap-0.5 font-mono-body text-[14px]">
       {FILES.map((f, i) => {
         const targetHref = isHome ? f.href : `/${f.href}`;
@@ -126,8 +147,10 @@ export default function Sidebar() {
           <a
             key={i}
             href={targetHref}
-            onClick={() => {
-              if (onItemClick) onItemClick();
+            onClick={(e) => {
+              if (isMobile) {
+                handleLinkClick(e, f);
+              }
             }}
             className={`focus-ring px-2.5 py-1.5 border-l-2 transition-colors ${
               f.indent ? 'pl-6 text-[13px]' : ''
@@ -160,7 +183,7 @@ export default function Sidebar() {
           ~/rohit-verma
         </p>
 
-        {renderNavLinks()}
+        {renderNavLinks(false)}
 
         <div className="mt-auto pt-8 font-mono-body text-[11px] text-faint">
           <Link
@@ -176,6 +199,13 @@ export default function Sidebar() {
       <div className="lg:hidden sticky top-0 z-40 flex items-center justify-between border-b border-border bg-bg/90 backdrop-blur px-5 py-4">
         <Link
           to="/"
+          onClick={() => {
+            setOpen(false);
+            document.body.style.overflow = '';
+            if (isHome) {
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+          }}
           className="focus-ring inline-flex items-center"
           aria-label="Home"
         >
@@ -203,7 +233,10 @@ export default function Sidebar() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
-              onClick={() => setOpen(false)}
+              onClick={() => {
+                setOpen(false);
+                document.body.style.overflow = '';
+              }}
               className="lg:hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm"
               aria-hidden="true"
             />
@@ -228,7 +261,10 @@ export default function Sidebar() {
                     <p className="font-mono-display font-bold text-sm text-text">menu</p>
                   </div>
                   <button
-                    onClick={() => setOpen(false)}
+                    onClick={() => {
+                      setOpen(false);
+                      document.body.style.overflow = '';
+                    }}
                     className="focus-ring font-mono-body text-xs text-muted hover:text-accent border border-border hover:border-accent px-2.5 py-1 transition-colors"
                     aria-label="Close menu"
                   >
@@ -237,14 +273,17 @@ export default function Sidebar() {
                 </div>
 
                 {/* Nav Links */}
-                {renderNavLinks(() => setOpen(false))}
+                {renderNavLinks(true)}
               </div>
 
               {/* Drawer footer */}
               <div className="pt-6 border-t border-border mt-8 space-y-3 font-mono-body text-[12px]">
                 <Link
                   to="/blog"
-                  onClick={() => setOpen(false)}
+                  onClick={() => {
+                    setOpen(false);
+                    document.body.style.overflow = '';
+                  }}
                   className="focus-ring flex items-center justify-between text-muted hover:text-accent border border-border hover:border-accent-dim px-3 py-2 transition-colors"
                 >
                   <span>blog/</span>

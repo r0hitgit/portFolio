@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const FILES = [
   { href: '#education', label: 'education.log' },
@@ -51,13 +52,37 @@ const Logo = ({ size = 30 }) => {
   );
 };
 
-
-
 export default function Sidebar() {
   const [open, setOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('');
   const location = useLocation();
   const isHome = location.pathname === '/';
+
+  // Close drawer on route change
+  useEffect(() => {
+    setOpen(false);
+  }, [location.pathname]);
+
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [open]);
+
+  // Close drawer on Escape key press
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') setOpen(false);
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   useEffect(() => {
     if (!isHome) return;
@@ -90,7 +115,7 @@ export default function Sidebar() {
     return () => observer.disconnect();
   }, [isHome]);
 
-  const linkList = (
+  const renderNavLinks = (onItemClick) => (
     <nav className="flex flex-col gap-0.5 font-mono-body text-[14px]">
       {FILES.map((f, i) => {
         const targetHref = isHome ? f.href : `/${f.href}`;
@@ -101,7 +126,9 @@ export default function Sidebar() {
           <a
             key={i}
             href={targetHref}
-            onClick={() => setOpen(false)}
+            onClick={() => {
+              if (onItemClick) onItemClick();
+            }}
             className={`focus-ring px-2.5 py-1.5 border-l-2 transition-colors ${
               f.indent ? 'pl-6 text-[13px]' : ''
             } ${
@@ -133,7 +160,7 @@ export default function Sidebar() {
           ~/rohit-verma
         </p>
 
-        {linkList}
+        {renderNavLinks()}
 
         <div className="mt-auto pt-8 font-mono-body text-[11px] text-faint">
           <Link
@@ -156,29 +183,83 @@ export default function Sidebar() {
         </Link>
 
         <button
-          className="focus-ring font-mono-body text-xs text-muted border border-border px-3 py-1.5"
+          className="focus-ring font-mono-body text-xs text-muted border border-border px-3 py-1.5 hover:text-accent hover:border-accent-dim transition-colors"
           onClick={() => setOpen((v) => !v)}
           aria-expanded={open}
-          aria-label="Toggle navigation"
+          aria-label="Toggle navigation menu"
         >
           {open ? 'close' : 'menu'}
         </button>
       </div>
 
-      {/* Mobile navigation */}
-      {open && (
-        <div className="lg:hidden border-b border-border px-5 py-4">
-          {linkList}
+      {/* Mobile horizontal drawer (opens from right to left) */}
+      <AnimatePresence>
+        {open && (
+          <>
+            {/* Backdrop overlay */}
+            <motion.div
+              key="drawer-backdrop"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              onClick={() => setOpen(false)}
+              className="lg:hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm"
+              aria-hidden="true"
+            />
 
-          <Link
-            to="/blog"
-            onClick={() => setOpen(false)}
-            className="focus-ring block mt-3 font-mono-body text-[13px] text-faint hover:text-accent"
-          >
-            blog/
-          </Link>
-        </div>
-      )}
+            {/* Slide-out drawer panel (right to left) */}
+            <motion.aside
+              key="drawer-panel"
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '100%' }}
+              transition={{ type: 'spring', damping: 28, stiffness: 280 }}
+              className="lg:hidden fixed top-0 right-0 bottom-0 z-50 w-72 sm:w-80 max-w-[85vw] h-full bg-bg border-l border-border shadow-[-14px_0_35px_rgba(0,0,0,0.85)] flex flex-col justify-between p-6 overflow-y-auto"
+              role="dialog"
+              aria-modal="true"
+              aria-label="Navigation menu"
+            >
+              <div>
+                {/* Drawer header */}
+                <div className="flex items-center justify-between pb-4 border-b border-border mb-6">
+                  <div>
+                    <p className="font-mono-body text-[11px] text-faint">~/rohit-verma</p>
+                    <p className="font-mono-display font-bold text-sm text-text">menu</p>
+                  </div>
+                  <button
+                    onClick={() => setOpen(false)}
+                    className="focus-ring font-mono-body text-xs text-muted hover:text-accent border border-border hover:border-accent px-2.5 py-1 transition-colors"
+                    aria-label="Close menu"
+                  >
+                    [x] close
+                  </button>
+                </div>
+
+                {/* Nav Links */}
+                {renderNavLinks(() => setOpen(false))}
+              </div>
+
+              {/* Drawer footer */}
+              <div className="pt-6 border-t border-border mt-8 space-y-3 font-mono-body text-[12px]">
+                <Link
+                  to="/blog"
+                  onClick={() => setOpen(false)}
+                  className="focus-ring flex items-center justify-between text-muted hover:text-accent border border-border hover:border-accent-dim px-3 py-2 transition-colors"
+                >
+                  <span>blog/</span>
+                  <span className="text-[11px] opacity-60">&rarr;</span>
+                </Link>
+
+                <div className="flex items-center justify-between text-[11px] text-faint pt-1">
+                  <span>rohit verma</span>
+                  <span className="text-accent">exit 0</span>
+                </div>
+              </div>
+            </motion.aside>
+          </>
+        )}
+      </AnimatePresence>
     </>
   );
 }
